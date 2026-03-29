@@ -91,6 +91,10 @@ const Index = () => {
               channelName={channel.name}
               channelAvatar={channel.avatar}
             />
+            <AnalyticsCharts
+              videos={videos}
+              channelFollowers={channel.followers}
+            />
           </>
         )}
       </main>
