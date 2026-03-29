@@ -6,6 +6,7 @@ import ChannelOverview from "@/components/ChannelOverview";
 import TopPerformingVideos from "@/components/TopPerformingVideos";
 import AnalyticsCharts from "@/components/AnalyticsCharts";
 import ExportData from "@/components/ExportData";
+import DailyMetrics from "@/components/DailyMetrics";
 import Footer from "@/components/Footer";
 import { dummyChannel, dummyVideos } from "@/lib/dummyData";
 import { fetchYouTubeAnalytics } from "@/lib/youtubeApi";
@@ -96,6 +97,7 @@ const Index = () => {
               videos={videos}
               channelFollowers={channel.followers}
             />
+            <DailyMetrics channel={channel} videos={videos} />
             <ExportData channel={channel} videos={videos} />
           </>
         )}
