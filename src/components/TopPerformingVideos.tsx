@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Video } from "lucide-react";
+import { ExternalLink, Video, Trophy, Eye, Heart, MessageCircle } from "lucide-react";
 
 export interface VideoItem {
   id: string;
@@ -20,8 +21,41 @@ interface TopPerformingVideosProps {
   channelAvatar: string;
 }
 
+function computeScore(video: VideoItem): number {
+  const now = Date.now();
+  const published = new Date(video.publishedAt).getTime();
+  const daysSincePublish = Math.max(1, (now - published) / (1000 * 60 * 60 * 24));
+  const recencyBoost = Math.max(0, 1 - daysSincePublish / 30); // 1.0 if today, 0 if 30+ days
+
+  return (
+    video.views * 0.5 +
+    video.likes * 0.2 +
+    video.comments * 0.2 +
+    recencyBoost * 10000 * 0.1
+  );
+}
+
+const rankColors = [
+  "from-amber-400 to-yellow-500",   // #1 gold
+  "from-slate-300 to-slate-400",     // #2 silver
+  "from-amber-600 to-amber-700",     // #3 bronze
+];
+
+const rankLabels = ["1st", "2nd", "3rd"];
+
+const formatCompact = (n: number) => {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1) + "M";
+  if (n >= 1_000) return (n / 1_000).toFixed(1) + "K";
+  return n.toString();
+};
+
 const TopPerformingVideos = ({ videos, channelName, channelAvatar }: TopPerformingVideosProps) => {
-  const top3 = videos.slice(0, 3);
+  const ranked = useMemo(() => {
+    return [...videos]
+      .map((v) => ({ ...v, score: computeScore(v) }))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 3);
+  }, [videos]);
 
   return (
     <section className="max-w-[1100px] mx-auto px-6 mb-16">
@@ -36,15 +70,23 @@ const TopPerformingVideos = ({ videos, channelName, channelAvatar }: TopPerformi
       </motion.h2>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {top3.map((video, i) => (
+        {ranked.map((video, i) => (
           <motion.div
             key={video.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.4, delay: i * 0.1 }}
-            className="group"
+            className="group relative"
           >
+            {/* Ranking badge */}
+            <div
+              className={`absolute -top-3 -left-2 z-10 flex items-center gap-1 px-2.5 py-1 rounded-full bg-gradient-to-r ${rankColors[i]} shadow-md`}
+            >
+              <Trophy size={13} className="text-foreground" />
+              <span className="text-xs font-bold text-foreground">{rankLabels[i]}</span>
+            </div>
+
             {/* Phone mockup card */}
             <div className="bg-foreground rounded-[28px] p-3 pt-4 pb-6 shadow-lg">
               {/* Card header */}
@@ -82,9 +124,24 @@ const TopPerformingVideos = ({ videos, channelName, channelAvatar }: TopPerformi
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
-                {/* Video icon overlay */}
                 <div className="absolute bottom-2 left-2 bg-foreground/80 rounded p-1">
                   <Video size={14} className="text-primary-foreground" />
+                </div>
+              </div>
+
+              {/* Metrics bar */}
+              <div className="flex items-center justify-around px-2 mt-3">
+                <div className="flex items-center gap-1 text-primary-foreground/70">
+                  <Eye size={13} />
+                  <span className="text-[11px] font-medium">{formatCompact(video.views)}</span>
+                </div>
+                <div className="flex items-center gap-1 text-primary-foreground/70">
+                  <Heart size={13} />
+                  <span className="text-[11px] font-medium">{formatCompact(video.likes)}</span>
+                </div>
+                <div className="flex items-center gap-1 text-primary-foreground/70">
+                  <MessageCircle size={13} />
+                  <span className="text-[11px] font-medium">{formatCompact(video.comments)}</span>
                 </div>
               </div>
             </div>
