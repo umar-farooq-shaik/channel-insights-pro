@@ -1,9 +1,10 @@
 import type { ChannelData } from "@/components/ChannelOverview";
 import type { VideoItem } from "@/components/TopPerformingVideos";
+import hboAvatar from "@/assets/hbo-avatar.png";
 
 export const dummyChannel: ChannelData = {
   name: "HBO",
-  avatar: "https://yt3.googleusercontent.com/mfGkGOahOJAnHcMBnUfP3mRfABOisBeiGROYS-MBY2nEHfDqsWg2gR4Dk3QJGwHKYnaLJxy_rA=s176-c-k-c0x00ffffff-no-rj",
+  avatar: hboAvatar,
   followers: 0,
   engagementRate: 0,
   averageLikes: 601.31,
