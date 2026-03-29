@@ -33,7 +33,7 @@ const HeroSection = ({ onAnalyze, isLoading }: HeroSectionProps) => {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="text-base md:text-lg text-muted-foreground leading-relaxed mb-10 max-w-[600px] mx-auto"
         >
-          {"\n"}
+          Understand your target audience to better resonate with the people most likely to engage with your brand
         </motion.p>
 
         <motion.form
