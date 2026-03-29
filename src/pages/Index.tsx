@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ChannelOverview from "@/components/ChannelOverview";
 import TopPerformingVideos from "@/components/TopPerformingVideos";
+import AnalyticsCharts from "@/components/AnalyticsCharts";
 import Footer from "@/components/Footer";
 import { dummyChannel, dummyVideos } from "@/lib/dummyData";
 import { fetchYouTubeAnalytics } from "@/lib/youtubeApi";
@@ -89,6 +90,10 @@ const Index = () => {
               videos={videos}
               channelName={channel.name}
               channelAvatar={channel.avatar}
+            />
+            <AnalyticsCharts
+              videos={videos}
+              channelFollowers={channel.followers}
             />
           </>
         )}
