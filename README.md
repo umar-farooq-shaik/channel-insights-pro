@@ -1,3 +1,5 @@
-# Welcome to your Lovable project
+# Built this within 2 hours
 
-TODO: Document your project here
+## Loom Video: https://vimeo.com/1178227159
+
+## Project Demo Videos: https://vimeo.com/showcase/11845611
